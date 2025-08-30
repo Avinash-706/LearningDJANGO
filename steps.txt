@@ -1,11 +1,40 @@
-1. PS D:\SEMESTER - VII\SEM - VII INT253 (WEBD DJANGO)\Learn> virtualenv env
-2. PS D:\SEMESTER - VII\SEM - VII INT253 (WEBD DJANGO)\Learn> .\env\Scripts\Activate.ps1
-3. pip install django
-4. Check Version of Django : django-admin --version
-5. Create Project : django-admin startproject core
-6. How to run the Project : first go to the project directory then, python manage.py runserver
-
-7. how to make a app : We need to go inside the project folder and then create a app there : python manage.py startapp home
-
-8. After making the add then we need to go to the setting.py of the project and add that app in the INSTALLED_APPS
-9.
+===========================================
+DJANGO SETUP AND PROJECT WORKFLOW STEPS
+ ===========================================
+ 
+ 1) CREATE VIRTUAL ENVIRONMENT  
+    METHOD 1 : Using virtualenv  
+       -> PS D:\SEMESTER - VII\SEM - VII INT253 (WEBD DJANGO)\Learn> virtualenv env  
+ 
+    METHOD 2 : Using uv  
+       -> PS D:\SEMESTER - VII\SEM - VII INT253 (WEBD DJANGO)\Learn> uv venv  
+ 
+ 2) ACTIVATE VIRTUAL ENVIRONMENT  
+    METHOD 1 : For virtualenv  
+       -> PS D:\SEMESTER - VII\SEM - VII INT253 (WEBD DJANGO)\Learn> .\env\Scripts\Activate.ps1  
+ 
+    METHOD 2 : For uv (creates .venv folder by default)  
+       -> PS D:\SEMESTER - VII\SEM - VII INT253 (WEBD DJANGO)\Learn> .\.venv\Scripts\Activate.ps1  
+ 
+ 3) INSTALL DJANGO  
+    -> pip install django  
+    (TIP: If using uv, you can also run: uv pip install django for faster installs)  
+ 
+ 4) CHECK DJANGO VERSION  
+    -> django-admin --version  
+ 
+ 5) CREATE A NEW PROJECT  
+    -> django-admin startproject core  
+ 
+ 6) RUN THE PROJECT  
+    -> Navigate to the project directory  
+    -> python manage.py runserver  
+ 
+ 7) CREATE A NEW APP  
+    -> Navigate inside the project folder  
+    -> python manage.py startapp home  
+ 
+ 8) REGISTER THE APP  
+    -> Open settings.py file of the project  
+    -> Add the app name (e.g., 'home') under INSTALLED_APPS  
+ 
