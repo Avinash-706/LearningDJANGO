@@ -1,0 +1,11 @@
+1. PS D:\SEMESTER - VII\SEM - VII INT253 (WEBD DJANGO)\Learn> virtualenv env
+2. PS D:\SEMESTER - VII\SEM - VII INT253 (WEBD DJANGO)\Learn> .\env\Scripts\Activate.ps1
+3. pip install django
+4. Check Version of Django : django-admin --version
+5. Create Project : django-admin startproject core
+6. How to run the Project : first go to the project directory then, python manage.py runserver
+
+7. how to make a app : We need to go inside the project folder and then create a app there : python manage.py startapp home
+
+8. After making the add then we need to go to the setting.py of the project and add that app in the INSTALLED_APPS
+9. 
