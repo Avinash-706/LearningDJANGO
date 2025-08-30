@@ -8,4 +8,4 @@
 7. how to make a app : We need to go inside the project folder and then create a app there : python manage.py startapp home
 
 8. After making the add then we need to go to the setting.py of the project and add that app in the INSTALLED_APPS
-9. 
+9.

@@ -1,0 +1,98 @@
+========================
+DJANGO NOTES
+ ========================
+
+ 
+ 1. DJANGO TEMPLATES
+ ------------------------
+ -> Django templates are used to store `.html`, `.css`, and `.js` files for rendering dynamic web pages
+ -> Templates separate PRESENTATION (UI) from BUSINESS LOGIC (Python backend)
+ -> Templates are rendered by Django views using the `render()` function
+ -> Example:
+       from django.shortcuts import render
+ 
+       def home(request):
+           return render(request, "index.html")
+ 
+ -> Advantages:
+    ✓ Clean separation of logic & design
+    ✓ Easy integration with static files (CSS/JS)
+    ✓ Powerful templating engine with filters, tags, loops
+ 
+ 
+ 
+ 2. CONTEXT IN DJANGO
+ ------------------------
+ -> Context = Dictionary that passes dynamic data from backend (views.py) to frontend (template)
+ -> Example:
+       def home(request):
+           peoples = ["Avinash", "Rohit", "Sneha"]
+           return render(request, "index.html", {"peoples": peoples})
+ 
+ -> In `index.html`:
+       <ul>
+         {% for person in peoples %}
+           <li>{{ person }}</li>
+         {% endfor %}
+       </ul>
+ 
+ -> Uses:
+    ✓ Dynamic rendering of data
+    ✓ Easy communication between Python code & HTML
+ 
+ 
+ 
+ 3. DJANGO TEMPLATE LANGUAGE (DTL) BASICS
+ ------------------------
+ -> `{{ variable }}` → Displays variables passed in context
+ -> `{% tag %}` → Used for logic/conditions/loops
+ -> Example:
+       {{ peoples }}                  # Prints the list
+       {% for person in peoples %}    # Loop through list
+          {{ person }}
+       {% endfor %}
+ 
+ -> **For Loop Special Variables**:
+    * `forloop.counter` → 1-based index of current iteration
+    * `forloop.counter0` → 0-based index
+    * `forloop.first` → True if first iteration
+    * `forloop.last` → True if last iteration
+    * `forloop.revcounter` → Countdown from last to first
+    * Example:
+          {% for person in peoples %}
+             {{ forloop.counter }} : {{ person }}
+          {% endfor %}
+ 
+ 
+ 
+ 4. DJANGO TEMPLATE FILTERS
+ ------------------------
+ -> Filters are used inside `{{ }}` to modify data before rendering
+ -> Syntax: `{{ variable|filtername:parameter }}`
+ -> Example:
+       {{ text|truncatechars:80 }}
+       -> Cuts text after 80 characters
+ 
+ -> Common & Prominent Filters:
+    * `truncatechars:n` → Cuts string after n characters
+    * `truncatewords:n` → Cuts string after n words
+    * `length` → Returns length of list/string
+    * `lower` / `upper` → Converts to lowercase / uppercase
+    * `title` → Converts to Title Case
+    * `date:"D M Y"` → Formats a datetime object
+    * `default:"value"` → If variable is empty, use default
+    * `join:", "` → Joins list items with given separator
+    * `safe` → Marks content as safe HTML (removes auto-escaping) [⚠ risky]
+ 
+ -> Example:
+       {{ "avinash dhanuka"|title }}
+       -> Output: "Avinash Dhanuka"
+ 
+       {{ mylist|join:" - " }}
+       -> Output: "a - b - c"
+ 
+ -> **Why Filters?**
+    ✓ Make data user-friendly
+    ✓ Avoid writing formatting logic in views
+    ✓ Keep templates cleaner and readable
+ 
