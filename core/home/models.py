@@ -6,8 +6,6 @@ class Student(models.Model):
     age = models.IntegerField()
     email = models.EmailField()
     address = models.TextField(blank=True, null=True)
-    image = models.ImageField(null=True, blank= True)
-    file = models.FileField()
 
 class Product(models.Model):
     pass

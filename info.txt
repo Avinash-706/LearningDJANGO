@@ -207,3 +207,67 @@ DJANGO NOTES
     - Recreate migration file  
     - Use python manage.py migrate --fake to skip  
     - Drop database and reset migrations (not recommended in production)  
+
+
+
+12. DJANGO SHELL (python manage.py shell)
+----------------------------------------
+-> Django provides an interactive Python shell integrated with your project
+-> It loads all models, settings, and configurations automatically
+-> Helps to test and interact with database objects using ORM (Object Relational Mapping)
+
+EXAMPLE:
+    stu = Student(name="Avinash", age="22", email="avunash@gmail.com", address="HCL Road")
+    stu.save()   -> Saves the student object into database
+
+Shortcut method:
+    Student.objects.create(name="Sahil", age="17", email="sahil@gmail.com", address="MP")
+
+Fetching records:
+    Student.objects.all()   -> Returns all Student objects as QuerySet
+    Student.objects.all()[0].name     -> Access first student's name
+    Student.objects.all()[0].address  -> Access first student's address
+
+✅ USE CASE: 
+   -> Used to quickly test model queries and perform CRUD operations without writing views/templates
+
+
+
+ 13. DJANGO ORM OBJECT CREATION
+ ----------------------------------------
+ METHOD 1 (Direct creation with save):
+     stu = Student(name="Avinash", age="22", email="avunash@gmail.com", address="HCL Road")
+     stu.save()
+ 
+ METHOD 2 (Using create()):
+     stu = Student.objects.create(name="Avinash", age="22", email="avunash@gmail.com", address="HCL Road")
+ 
+ DIFFERENCE:
+     -> METHOD 1:
+         - Creates an object in Python memory only
+         - Requires calling stu.save() explicitly to push it into database
+     -> METHOD 2:
+         - Directly creates and saves object into database
+         - No need for .save() explicitly
+ 
+ IMPORTANT:
+     -> objects is called a **Model Manager**
+     -> Model Manager is a gateway for database queries (objects.all(), objects.filter(), objects.create(), etc.)
+ 
+ 
+ 
+ 14. ERROR WHEN RUNNING DJANGO CODE OUTSIDE SHELL
+ ------------------------------------------------
+ -> If we try to run a normal Python file (.py) with Django-specific code (like importing models or ORM operations), 
+    we get errors (ImproperlyConfigured, no settings configured)
+ -> This happens because Django requires its settings and environment to be loaded
+ 
+ SOLUTION:
+     -> Run files using Django shell:
+         python manage.py shell
+     -> Or use "django-extensions" package to run custom scripts safely
+ 
+ ✅ INTERVIEW INSIGHT:
+     - Q: Why can't we run Django ORM code directly in normal Python shell?
+     - A: Because Django needs settings.py (database config, installed apps, etc.) to be initialized.
+          manage.py shell takes care of this initialization automatically.
