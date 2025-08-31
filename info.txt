@@ -96,3 +96,114 @@ DJANGO NOTES
     ✓ Avoid writing formatting logic in views
     ✓ Keep templates cleaner and readable
  
+
+ 
+ 5. DRY CONCEPT (DON'T REPEAT YOURSELF)  
+ -----------------------------------
+ -> Purpose: Remove redundancy in code (avoid writing the same HTML/CSS/JS multiple times).  
+ -> Common use: Header, Footer, <html>, <head>, <script> tags repeated in multiple pages.  
+ 
+ SOLUTION: BASE TEMPLATE INHERITANCE
+ -> Create a base.html file containing the common structure. Example:
+    <html>
+    <head>
+        <title>Django App</title>
+    </head>
+    <body>
+        {% block start %}
+        {% endblock %}
+    </body>
+    </html>
+ 
+ -> In other templates, extend it:
+    {% extends "base.html" %}
+    {% block start %}
+        <h1>Page Content Here</h1>
+    {% endblock %}
+ 
+ WORKING OF EXTENDS:
+ -> {% extends "base.html" %} tells Django template engine to first load base.html.  
+ -> Then it replaces only the {% block %} sections with the child template’s content.  
+ -> Advantage: Code reusability, easier maintenance, faster development.  
+ 
+
+
+ 6. WHAT IS MODELS IN DJANGO?  
+ -----------------------------------
+ -> A Model is a Python class that represents a database table.  
+ -> Each attribute of the class represents a field (column) in the table.  
+ -> Example:
+    class Student(models.Model):
+        name = models.CharField(max_length=100)
+        age  = models.IntegerField()
+ 
+ -> In "models.Model", the "Model" is a BASE CLASS provided by Django ORM.  
+ -> Django ORM = Object Relational Mapper → maps Python objects to database records.  
+ 
+
+
+ 7. WHICH FIELD IS AUTOMATICALLY ADDED?  
+ -----------------------------------
+ -> Django automatically adds:  
+    id = models.AutoField(primary_key=True)  
+ -> Purpose: Unique identifier for each record (like objectId in MongoDB).  
+ -> Works as Primary Key in SQL (by default if no custom PK is defined).  
+ 
+ 
+
+ 8. WHAT IS MIGRATION IN DJANGO?  
+ -----------------------------------
+ -> After creating/changing a model, you must apply migrations.  
+ -> Migration = Way to propagate model changes into the database.  
+ 
+ WORKING:  
+ -> makemigrations: Creates migration files (like version history of DB schema).  
+ -> migrate: Applies these changes into the actual database (SQLite/MySQL/Postgres).  
+ -> Relation with SQL:  
+    - Model class → Python representation  
+    - Migration → SQL script generated from Model  
+    - Database → Final applied structure  
+ 
+
+
+ 9. DJANGO MIGRATION COMMANDS  
+ -----------------------------------
+ -> python manage.py makemigrations  
+    - Detects changes in models.py  
+    - Creates new migration files inside "migrations" folder  
+ 
+ -> python manage.py migrate  
+    - Applies migrations to database  
+    - Actually creates/updates SQL tables  
+ 
+
+
+ 10. HOW DJANGO COMPARES CHANGES IN MIGRATIONS  
+ -----------------------------------
+ -> Django runs all previous migrations in order  
+ -> Creates a STATE of the database schema  
+ -> Compares the state with the current models.py  
+ -> If differences found → generates new migrations  
+ -> If no differences → "No changes detected"  
+ 
+ DIFFERENCE BETWEEN makemigrations vs migrate:
+ -> makemigrations → Prepares the migration file (does not touch DB)  
+ -> migrate → Executes the migration file (applies to DB)  
+ 
+
+
+ 11. INTERVIEW QUESTION: WHAT IF WE DELETE MIGRATION FILE?  
+ -----------------------------------
+ CASE 1: If a migration file is deleted but DB already updated →  
+ -> Django compares current migrations with db.sqlite schema  
+ -> Error: "Inconsistent migration history"  
+ 
+ CASE 2: If db.sqlite record is deleted but migration exists →  
+ -> Django will try to reapply → may cause errors or duplicate tables  
+ 
+ CAN DJANGO FIX IT AUTOMATICALLY?  
+ -> NO, manual fixing required.  
+ -> Options:  
+    - Recreate migration file  
+    - Use python manage.py migrate --fake to skip  
+    - Drop database and reset migrations (not recommended in production)  

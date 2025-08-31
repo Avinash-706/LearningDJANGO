@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
 
-def front(request):
+def home(request):
     people = [
         {'name' : 'Abhijeet Gupta',       'age' : 26},
         {'name' : 'Rohan Sharma',         'age' : 23},
@@ -11,7 +11,17 @@ def front(request):
         {'name' : 'Sandeep',              'age' : 63}
     ]
     text = "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae earum amet quaerat doloribus illo asperiores quasi sed, dolor ab pariatur vitae quo corrupti magnam dolores sapiente error laudantium itaque, optio dolore placeat laboriosam? Sequi deserunt porro mollitia provident laboriosam modi illum facere vero? Molestias tenetur velit voluptatem perferendis at eveniet quidem aspernatur dolorem nisi iusto, nulla facere voluptates molestiae dolore consequatur eligendi, deserunt tempore sunt temporibus cumque doloremque aperiam. Nesciunt debitis magni aliquid, culpa temporibus vel velit vitae ipsam, animi ducimus corporis dolores eos accusamus excepturi placeat possimus eius quas sint porro! Ad, reiciendis non porro nulla, eligendi fuga ut unde placeat temporibus, vel at? Aliquam facere voluptates repellendus explicabo sunt necessitatibus sit? Inventore, nam vero nemo velit iste in ea, suscipit libero dolorum necessitatibus ipsum voluptate! Possimus vitae hic nesciunt, deserunt aliquid velit esse nulla laudantium eaque. Iste animi ipsam, necessitatibus vel laudantium aliquid distinctio ipsum aut, ducimus laboriosam id perspiciatis quis enim ab quod tempore modi. Voluptatem quas sint enim expedita distinctio optio est eum, temporibus, voluptates quo ullam natus quis molestias facere consectetur tempora aperiam quidem vero. Temporibus corporis quisquam suscipit ea placeat reprehenderit ullam quas hic aliquam, pariatur aspernatur eveniet provident, illo aut laboriosam voluptatum perferendis nisi. Odit nostrum quis reiciendis, in harum, debitis, dolor animi earum quidem natus eius! Veritatis labore voluptas quo accusamus facere id quae? Quis ipsum veniam sapiente possimus sequi laborum impedit assumenda soluta debitis rerum optio minus eos incidunt quas dolorem neque molestiae, harum eaque numquam dolore nobis suscipit eveniet! Modi beatae labore, possimus repellendus tempore necessitatibus quia iusto, voluptatibus quas dolore doloremque blanditiis. Iste consectetur dolores dolore quidem quam quo rem nam magnam animi doloremque neque laudantium assumenda officia in, nihil inventore maiores repudiandae, excepturi eos hic? Vel incidunt necessitatibus cupiditate ab similique laboriosam ipsa dolore assumenda et asperiores, doloremque deserunt sequi deleniti magni, cum molestiae, nostrum perferendis repudiandae quisquam totam. Hic voluptates nostrum ea voluptate nulla illum vero sint nisi doloribus soluta, commodi perferendis similique earum quos maxime perspiciatis tempora tempore dolorem. Laboriosam temporibus, molestias doloribus optio laudantium a eaque hic libero vitae ipsa. Architecto voluptate suscipit repellat dolorem voluptas! Tempore assumenda provident, dolore aliquid aut rem omnis totam officiis quidem sunt nisi quis officia, consectetur molestiae cumque mollitia laudantium velit quae earum vero, iste excepturi dignissimos. Ex, sunt. Numquam, nisi? Quos exercitationem provident temporibus beatae debitis totam distinctio voluptatem, quaerat illo perferendis minus quas deserunt similique ullam rerum numquam quam rem odit, quia magnam! Minima natus, quia id quasi provident sequi animi harum inventore et dolorum vitae quod velit commodi temporibus, numquam eaque at ea totam cum? Perferendis rem aut architecto eum reiciendis voluptatum nam deserunt quas dolore totam animi laudantium, consequuntur laborum ut optio rerum porro corrupti minus dolores necessitatibus illum. Voluptate molestias voluptates voluptatem, neque illum maiores aliquam vero voluptatibus illo quos eum libero iste sunt nulla facilis cupiditate nesciunt dignissimos dolorem iusto unde. Pariatur exercitationem, possimus in, nihil incidunt tenetur rem fuga porro alias est perferendis nobis amet! Tempore cupiditate officiis placeat nisi dolorem totam!"
-    return render(request, "index.html", context = {'peoples' : people, 'text' : text})
+    return render(request, "home/index.html", context = {'peoples' : people, 'text' : text, 'page' : 'Learning Django'})
+
+
+def about(request):
+    context = {'page' : 'About'}
+    return  render(request, "home/about.html", context)
+
+
+def contact(request):
+    context = {'page' : 'Contact'}
+    return render(request,"home/contact.html", context)
 
 
 def success_page(request):
