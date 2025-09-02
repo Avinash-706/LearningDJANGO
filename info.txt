@@ -241,7 +241,11 @@ Fetching records:
  
  METHOD 2 (Using create()):
      stu = Student.objects.create(name="Avinash", age="22", email="avunash@gmail.com", address="HCL Road")
- 
+
+ METHOD 3 (Using Dictionary or JSON && **):
+    stu_dict = {name="Avinash", age=22, email="avunash@gmail.com", address="HCL Road"}
+    stu = Student.objects.create(**stu_dict)
+
  DIFFERENCE:
      -> METHOD 1:
          - Creates an object in Python memory only
@@ -271,3 +275,151 @@ Fetching records:
      - Q: Why can't we run Django ORM code directly in normal Python shell?
      - A: Because Django needs settings.py (database config, installed apps, etc.) to be initialized.
           manage.py shell takes care of this initialization automatically.
+
+
+
+ 15. CRUD OPERATIONS IN DATABASE
+ ---------------------------------
+ 
+ CREATE
+ ------
+ -> Using save():
+    stu = Student(name="Avinash", age="22", email="avunash@gmail.com", address="HCL Road")
+    stu.save()
+ 
+ -> Using create():
+    Student.objects.create(name="Sahil", age="17", email="sahil@gmail.com", address="MP")
+ 
+ -> Using bulk_create() for multiple entries:
+    students = [
+        Student(name="Raj", age=21, email="raj@gmail.com"),
+        Student(name="Amit", age=22, email="amit@gmail.com")
+    ]
+    Student.objects.bulk_create(students)
+ 
+ -> Note:
+    - save() -> creates or updates depending on if PK (primary key) exists
+    - create() -> always creates a new entry
+    - bulk_create() -> more efficient for inserting multiple rows
+ 
+ 
+ READ
+ ----
+ -> Fetch all objects:
+    cars = Car.objects.all()
+    <QuerySet [<Car: Car object (1)>, <Car: Car object (2)>, ...]>
+ 
+ -> Iterate over objects:
+    for car in cars:
+        print(f"{car.id}. {car.car_name} with speed {car.speed}")
+ 
+ -> Fetch single object using get():
+    Car.objects.get(id=2)
+    NOTE: Throws DoesNotExist error if not found
+          Throws MultipleObjectsReturned error if multiple rows found
+ 
+ -> Safer alternative using filter():
+    Car.objects.filter(id=2)
+    -> Always returns a QuerySet (empty if not found)
+ 
+ -> Using first() and last():
+    Car.objects.filter(speed__gte=100).first()
+    Car.objects.last()
+ 
+ -> Using values():
+    Car.objects.values("car_name", "speed")
+    OUTPUT: <QuerySet [{'car_name': 'Nexon', 'speed': 101}, ...]>
+ 
+ -> Using values_list():
+    Car.objects.values_list("car_name", "speed")
+    OUTPUT: <QuerySet [('Nexon', 101), ...]>
+ 
+ -> Using exclude():
+    Car.objects.exclude(speed__lt=100)
+ 
+ -> Advanced lookup examples:
+    Car.objects.filter(car_name__startswith="N")
+    Car.objects.filter(speed__range=(80, 150))
+    Car.objects.filter(speed__gte=120).order_by("-speed")
+ 
+ -> Summary:
+    - all() -> fetch all
+    - get() -> single row (errors if not found or multiple)
+    - filter() -> flexible, returns QuerySet
+    - values()/values_list() -> dictionaries/tuples
+    - first()/last() -> convenient record fetching
+    - exclude() -> opposite of filter()
+ 
+ 
+ UPDATE
+ ------
+ -> Update using filter():
+    Car.objects.filter(id=2).update(car_name="Nexon DARK")
+ 
+ -> Update specific object:
+    car = Car.objects.get(id=3)
+    car.speed = 180
+    car.save()
+ 
+ -> bulk_update() for multiple updates:
+    cars = Car.objects.filter(id__in=[2,3])
+    for c in cars:
+        c.speed += 10
+    Car.objects.bulk_update(cars, ['speed'])
+ 
+ 
+ DELETE
+ ------
+ -> Delete using get():
+    Car.objects.get(id=1).delete()
+ 
+ -> Delete using filter():
+    Car.objects.filter(speed__lt=100).delete()
+ 
+ -> Delete all records:
+    Car.objects.all().delete()
+ 
+ -> truncate equivalent (fastest way):
+    Car.objects.all().delete()  # But does not reset AutoField id sequence
+    For resetting IDs: Run SQL TRUNCATE manually
+ 
+ 
+ ==============================
+ .GET() vs .FILTER()
+ ==============================
+ 
+ | Feature         | get()                             | filter()                  |
+ |-----------------|----------------------------------|---------------------------|
+ | Return type     | Single object                     | QuerySet (list-like)      |
+ | If not found    | Raises DoesNotExist error         | Returns empty QuerySet [] |
+ | If multiple     | Raises MultipleObjectsReturned    | Returns multiple objects  |
+ | Safe to use     | ❌ Risky (error prone)             | ✅ Safe                   |
+ | Use case        | When you are SURE only one row    | When you want flexibility |
+ 
+ ==============================
+ INTERVIEW INSIGHTS
+ ==============================
+ -> save() vs create():
+    - save() can update or insert
+    - create() always inserts new row
+ 
+ -> delete() vs filter().delete():
+    - .get().delete() deletes single object
+    - .filter().delete() deletes multiple in one query
+ 
+ -> Efficiency tip:
+    - bulk_create() and bulk_update() are faster than looping with save()
+ 
+ -> QuerySet is lazy:
+    - Database query is not executed until data is actually accessed
+    - Example: cars = Car.objects.all() -> no query yet
+               list(cars) -> query executed
+ 
+ -> Atomicity:
+    - Each save(), update(), delete() is wrapped in a transaction
+    - Can use @transaction.atomic for batch operations
+ 
+ -> ORM vs Raw SQL:
+    - ORM is database-agnostic
+    - Raw SQL can be used for performance or complex queries:
+      Car.objects.raw("SELECT * FROM car WHERE speed > 120")
